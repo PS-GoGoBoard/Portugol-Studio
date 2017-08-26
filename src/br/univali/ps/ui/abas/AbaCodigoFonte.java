@@ -2023,7 +2023,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 botaoPlugin.setAction(new AbstractAction(plugin.getMetaDados().getNome(), new ImageIcon(plugin.getMetaDados().getIcone32x32())) {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (botaoPlugin.isSelected()) {
+                        //Exibe o painel de plugin, se não já não estiver exibindo
+                        if (scrollInspetor.getViewport().getView() != painelPlugins) {
                             JOptionPane.showMessageDialog(null, plugin.getMetaDados().getDescricao());
                             exibirPlugin(plugin);
                         }
