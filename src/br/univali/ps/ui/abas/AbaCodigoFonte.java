@@ -37,6 +37,7 @@ import br.univali.ps.ui.Lancador;
 import br.univali.ps.ui.editor.Editor;
 import br.univali.ps.ui.editor.Utils;
 import br.univali.ps.ui.paineis.PainelPlugins;
+import br.univali.ps.ui.paineis.PainelConfigPlugins;
 import br.univali.ps.ui.rstautil.PortugolParser;
 import br.univali.ps.ui.rstautil.tree.filters.DataTypeFilter;
 import br.univali.ps.ui.rstautil.tree.filters.SymbolTypeFilter;
@@ -143,7 +144,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private IndicadorDeProgresso indicadorProgresso;
 
-    private PainelPlugins painelPlugins;
+    private PainelConfigPlugins painelPlugins;
 
     protected AbaCodigoFonte() {
         super("Sem título" + numeroDocumento, lampadaApagada, true);
@@ -167,6 +168,26 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
         configurarCores();
         configuraLoader();
+        configurarBotaoPlugin();
+    }
+
+    public void configurarBotaoPlugin() {
+        if (GerenciadorPlugins.getInstance().pluginsCarregados.size() > 0) {
+            WebButton btnConfigPlugin = new WebButton();
+
+            btnConfigPlugin.setAction(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    exibirPainelPlugins();
+                }
+            });
+            btnConfigPlugin.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_GRANDES, "plugin.png"));
+            if (WeblafUtils.weblafEstaInstalado()) {
+                WeblafUtils.configurarBotao(btnConfigPlugin, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            }
+            FabricaDicasInterface.criarTooltip(btnConfigPlugin, "Exibir tela de configurações dos Plugins oficial");
+            barraFerramentas.add(btnConfigPlugin);
+        }
     }
 
     public void reseta() {
@@ -655,7 +676,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     private void criarPainelPlugin() {
-        painelPlugins = new PainelPlugins();
+        painelPlugins = new PainelConfigPlugins();
         painelPlugins.setBorder(null);
     }
 
@@ -2048,8 +2069,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     private void exibirPlugin(Plugin plugin) {
-        painelPlugins.setPlugin(plugin);
-        exibirPainelPlugins();
+        //painelPlugins.setPlugin(plugin);
+        //exibirPainelPlugins();
     }
 
     public void exibirPainelPlugins() {
@@ -2078,10 +2099,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 barraFerramentas.remove(botaoPlugin);
                 botoesPlugins.remove(plugin);
 
-                if (painelPlugins.getPlugin() == plugin) {
-                    painelPlugins.removerPlugin();
-                }
-
+//                if (painelPlugins.getPlugin() == plugin) {
+//                    painelPlugins.removerPlugin();
+//                }
                 if (botoesPlugins.isEmpty()) {
 //                    ocultarPainelBotoesPlugins();
                     ocultarPainelPlugins();
