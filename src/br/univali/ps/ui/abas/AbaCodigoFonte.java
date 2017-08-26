@@ -143,13 +143,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private IndicadorDeProgresso indicadorProgresso;
 
-    private PainelPlugins painelPlugins = null;
+    private PainelPlugins painelPlugins;
 
     protected AbaCodigoFonte() {
         super("Sem título" + numeroDocumento, lampadaApagada, true);
         initComponents();
         configurarArvoreEstrutural();
         criarPainelTemporario();
+        criarPainelPlugin();
         carregarConfiguracoes();
         configurarResolucao();
         configurarAcoes();
@@ -162,10 +163,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         criarDicasInterface();
         painelRecuperados.setVisible(false);
         painelSaida.getConsole().setAbaCodigoFonte(AbaCodigoFonte.this);
+        painelPlugins.setAbaCodigoFonte(AbaCodigoFonte.this);
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
         configurarCores();
         configuraLoader();
-        painelPlugins = new PainelPlugins();
     }
 
     public void reseta() {
@@ -178,6 +179,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelSaida.setForeground(ColorController.COR_LETRA);
         inspetorDeSimbolos.setBackground(ColorController.COR_CONSOLE);
         inspetorDeSimbolos.setForeground(ColorController.COR_LETRA);
+        painelPlugins.setBackground(ColorController.COR_CONSOLE);
+        painelPlugins.setForeground(ColorController.COR_LETRA);
         treePanel.setBackground(ColorController.COR_PRINCIPAL);
         painelRecuperados.setBackground(ColorController.VERMELHO.brighter().brighter());
         painelRecuperados.setBorder(new LineBorder(ColorController.VERMELHO, 2));
@@ -651,6 +654,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         });
     }
 
+    private void criarPainelPlugin(){
+        painelPlugins = new PainelPlugins();
+        painelPlugins.setBorder(null);
+    }
+    
     private void criarPainelTemporario() {
         painelTemporario = new JPanel();
         painelTemporario.setBorder(null);
@@ -2043,14 +2051,15 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //        {
         scrollInspetor.remove(inspetorDeSimbolos);
         scrollInspetor.setViewportView(painelPlugins);
-//            painelEsquerda.remove(painelArvore);
-//            painelEsquerda.add(divisorArvorePlugins, BorderLayout.CENTER);
-//            divisorArvorePlugins.setTopComponent(painelArvore);
-//            separadorPlugins.setVisible(true);
-//            painelEsquerda.validate();
-//            divisorArvorePlugins.setDividerLocation(0.5);
-//            painelEsquerda.validate();
+        divisorArvoreInspetor.setDividerLocation(650);          
+        painelInspetorArvore.validate();
 //        }
+    }
+    
+    public void ocultarPainelPlugins(){
+        scrollInspetor.remove(painelPlugins);
+        scrollInspetor.setViewportView(inspetorDeSimbolos);
+        divisorArvoreInspetor.setDividerLocation(758);
     }
 
     @Override

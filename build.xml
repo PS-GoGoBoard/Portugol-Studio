@@ -106,7 +106,7 @@
         
         <for param="recurso.dir">
             <path>
-                <dirset dir="${dist.dir}" includes="*" excludes="plugins"/>
+                <dirset dir="${dist.dir}" includes="*"/>
             </path>
             <sequential>
                 <local name="recurso.dir.basename"/>
