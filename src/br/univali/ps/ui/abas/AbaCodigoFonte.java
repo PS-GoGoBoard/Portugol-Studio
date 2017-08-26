@@ -172,7 +172,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     public void configurarBotaoPlugin() {
-        if (GerenciadorPlugins.getInstance().pluginsCarregados.size() > 0) {
+        if (GerenciadorPlugins.getInstance().getPluginsCarregados().size() > 0) {
             WebButton btnConfigPlugin = new WebButton();
 
             btnConfigPlugin.setAction(new AbstractAction() {
