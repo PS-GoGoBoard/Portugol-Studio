@@ -2035,8 +2035,22 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private void exibirPlugin(Plugin plugin) {
         painelPlugins.setPlugin(plugin);
+        exibirPainelPlugins();
+    }
 
-//        exibirPainelPlugins();
+    public void exibirPainelPlugins() {
+//        if (divisorArvoreInspetor.getParent() == null)
+//        {
+        scrollInspetor.remove(inspetorDeSimbolos);
+        scrollInspetor.setViewportView(painelPlugins);
+//            painelEsquerda.remove(painelArvore);
+//            painelEsquerda.add(divisorArvorePlugins, BorderLayout.CENTER);
+//            divisorArvorePlugins.setTopComponent(painelArvore);
+//            separadorPlugins.setVisible(true);
+//            painelEsquerda.validate();
+//            divisorArvorePlugins.setDividerLocation(0.5);
+//            painelEsquerda.validate();
+//        }
     }
 
     @Override
