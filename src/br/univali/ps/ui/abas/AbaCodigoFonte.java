@@ -107,7 +107,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private TelaOpcoesExecucao telaOpcoesExecucao; // inicializada tardiamente
 
-    private final Map<Plugin, WebButton> botoesPlugins = new HashMap<>();
+    //private final Map<Plugin, WebButton> botoesPlugins = new HashMap<>();
     private final Map<Action, WebButton> mapaBotoesAcoesPlugins = new HashMap<>();
 
     private Programa programaAnalisado; // compilado somente para análise
@@ -144,7 +144,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
     private IndicadorDeProgresso indicadorProgresso;
 
-    private PainelConfigPlugins painelPlugins;
+    private PainelConfigPlugins painelConfigPlugins;
 
     protected AbaCodigoFonte() {
         super("Sem título" + numeroDocumento, lampadaApagada, true);
@@ -164,7 +164,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         criarDicasInterface();
         painelRecuperados.setVisible(false);
         painelSaida.getConsole().setAbaCodigoFonte(AbaCodigoFonte.this);
-        painelPlugins.setAbaCodigoFonte(AbaCodigoFonte.this);
+        painelConfigPlugins.setAbaCodigoFonte(AbaCodigoFonte.this);
         inspetorDeSimbolos.setTextArea(editor.getTextArea());
         configurarCores();
         configuraLoader();
@@ -200,8 +200,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         painelSaida.setForeground(ColorController.COR_LETRA);
         inspetorDeSimbolos.setBackground(ColorController.COR_CONSOLE);
         inspetorDeSimbolos.setForeground(ColorController.COR_LETRA);
-        painelPlugins.setBackground(ColorController.COR_CONSOLE);
-        painelPlugins.setForeground(ColorController.COR_LETRA);
+        painelConfigPlugins.setBackground(ColorController.COR_CONSOLE);
+        painelConfigPlugins.setForeground(ColorController.COR_LETRA);
         treePanel.setBackground(ColorController.COR_PRINCIPAL);
         painelRecuperados.setBackground(ColorController.VERMELHO.brighter().brighter());
         painelRecuperados.setBorder(new LineBorder(ColorController.VERMELHO, 2));
@@ -676,8 +676,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     private void criarPainelPlugin() {
-        painelPlugins = new PainelConfigPlugins();
-        painelPlugins.setBorder(null);
+        painelConfigPlugins = new PainelConfigPlugins();
+        painelConfigPlugins.setBorder(null);
     }
 
     private void criarPainelTemporario() {
@@ -2027,36 +2027,38 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                final WebButton botaoPlugin = new WebButton();
-
-                botaoPlugin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                botaoPlugin.setFocusable(false);
-                botaoPlugin.setRequestFocusEnabled(false);
-                botaoPlugin.setHideActionText(true);
-                botaoPlugin.setIconTextGap(0);
-                botaoPlugin.setHorizontalAlignment(JToggleButton.CENTER);
-
-                if (WeblafUtils.weblafEstaInstalado()) {
-                    WeblafUtils.configurarBotao(botaoPlugin, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
-                }
-                FabricaDicasInterface.criarTooltip(botaoPlugin, "Exibir tela de configurações dos Plugins");
-
-                botaoPlugin.setAction(new AbstractAction(plugin.getMetaDados().getNome(), new ImageIcon(plugin.getMetaDados().getIcone32x32())) {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        //Exibe o painel de plugin, se não já não estiver exibindo
-                        if (scrollInspetor.getViewport().getView() != painelPlugins) {
-                            JOptionPane.showMessageDialog(null, plugin.getMetaDados().getDescricao());
-                            exibirPlugin(plugin);
-                        }
-                    }
-                });
-
-                botoesPlugins.put(plugin, botaoPlugin);
-//                barraFerramentas.remove(botaoPlugin);
-                barraFerramentas.add(botaoPlugin);
-//                grupoBotoesPlugins.remove(botaoPlugin);
-                grupoBotoesPlugins.add(botaoPlugin);
+                painelConfigPlugins.addModeloLista(plugin);
+                painelInspetorArvore.validate();
+//                final WebButton botaoPlugin = new WebButton();
+//
+//                botaoPlugin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//                botaoPlugin.setFocusable(false);
+//                botaoPlugin.setRequestFocusEnabled(false);
+//                botaoPlugin.setHideActionText(true);
+//                botaoPlugin.setIconTextGap(0);
+//                botaoPlugin.setHorizontalAlignment(JToggleButton.CENTER);
+//
+//                if (WeblafUtils.weblafEstaInstalado()) {
+//                    WeblafUtils.configurarBotao(botaoPlugin, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+//                }
+//                FabricaDicasInterface.criarTooltip(botaoPlugin, "Exibir tela de configurações dos Plugins");
+//
+//                botaoPlugin.setAction(new AbstractAction(plugin.getMetaDados().getNome(), new ImageIcon(plugin.getMetaDados().getIcone32x32())) {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        //Exibe o painel de plugin, se não já não estiver exibindo
+//                        if (scrollInspetor.getViewport().getView() != painelConfigPlugins) {
+//                            JOptionPane.showMessageDialog(null, plugin.getMetaDados().getDescricao());
+//                            exibirPlugin(plugin);
+//                        }
+//                    }
+//                });
+//
+//                botoesPlugins.put(plugin, botaoPlugin);
+////                barraFerramentas.remove(botaoPlugin);
+//                barraFerramentas.add(botaoPlugin);
+////                grupoBotoesPlugins.remove(botaoPlugin);
+//                grupoBotoesPlugins.add(botaoPlugin);
             }
         });
     }
@@ -2077,14 +2079,14 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //        if (divisorArvoreInspetor.getParent() == null)
 //        {
         scrollInspetor.remove(inspetorDeSimbolos);
-        scrollInspetor.setViewportView(painelPlugins);
+        scrollInspetor.setViewportView(painelConfigPlugins);
         divisorArvoreInspetor.setDividerLocation(0.7);
         painelInspetorArvore.validate();
 //        }
     }
 
     public void ocultarPainelPlugins() {
-        scrollInspetor.remove(painelPlugins);
+        scrollInspetor.remove(painelConfigPlugins);
         scrollInspetor.setViewportView(inspetorDeSimbolos);
         divisorArvoreInspetor.setDividerLocation(-1);
     }
@@ -2094,18 +2096,21 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                WebButton botaoPlugin = botoesPlugins.get(plugin);
+                //WebButton botaoPlugin = botoesPlugins.get(plugin);
 
-                barraFerramentas.remove(botaoPlugin);
-                botoesPlugins.remove(plugin);
+                //barraFerramentas.remove(botaoPlugin);
+                //botoesPlugins.remove(plugin);
 
 //                if (painelPlugins.getPlugin() == plugin) {
 //                    painelPlugins.removerPlugin();
 //                }
-                if (botoesPlugins.isEmpty()) {
+                /*if (botoesPlugins.isEmpty()) {
 //                    ocultarPainelBotoesPlugins();
                     ocultarPainelPlugins();
-                }
+                }*/
+                
+                painelConfigPlugins.removeModeloLista(plugin);
+                painelInspetorArvore.validate();
             }
         });
     }
@@ -2134,11 +2139,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 if (WeblafUtils.weblafEstaInstalado()) {
                     WeblafUtils.configurarBotao(botaoAcao, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
                 }
-                barraFerramentas.remove(botaoAcao);
                 barraFerramentas.add(botaoAcao);
                 barraFerramentas.repaint();
-
-                mapaBotoesAcoesPlugins.remove(acao, botaoAcao);
                 mapaBotoesAcoesPlugins.put(acao, botaoAcao);
             }
         });
@@ -2242,7 +2244,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         tarefaCompilacao.cancel(true);
         tarefaCompilacao = null;
         programaAnalisado = programaCompilado = null;
-
     }
 
     private boolean podeFechar() {
@@ -2341,6 +2342,9 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) aba;
                     if (abaCodigoFonte.podeFechar()) {
                         abaCodigoFonte.redefinirAba();
+                        
+                        
+                        
 
                         /* Ao fechar a aba precisamos desinstalar todos os plugins instalados nela. Fazemos isto,
                          * para garantir que quando a aba for reaproveitada a partir do pool, ela não irá conter dados
@@ -2390,6 +2394,10 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
             acaoExecutarPontoParada.setEnabled(ativados);
 
         });
+    }
+    
+    public JScrollPane getScrollInspetor(){
+        return scrollInspetor;
     }
 
 //    private static class PoolAbasCodigoFonte extends PoolAbstrato
