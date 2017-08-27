@@ -16,8 +16,8 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JScrollPane;
 import javax.swing.ListModel;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataListener;
 
 /**
@@ -105,6 +105,7 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
             final Image icone = metadado.getIcone16x16();
 
             renderer.setIcon(new ImageIcon(icone));
+            renderer.setBorder(new EmptyBorder(5, 10, 5, 0));
 
             return renderer;
         }
@@ -118,7 +119,6 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
             WeblafUtils.configurarBotao(botaoFechar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             listaPlugins.setBackground(ColorController.COR_DESTAQUE);
             listaPlugins.setForeground(ColorController.COR_LETRA);
-            //jScrollPane1.setCorner(JScrollPane.LOWER_RIGHT_CORNER, null);
             rotuloNome.setForeground(ColorController.COR_LETRA);
         }
     }
@@ -249,6 +249,7 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);*/
         
+        painelPlugins.setAbaCodigoFonte(abaCodigoFonte);
         painelPlugins.setPlugin(plugin);
         painelPlugins.add(plugin.getVisao());
         abaCodigoFonte.getScrollInspetor().remove(this);
