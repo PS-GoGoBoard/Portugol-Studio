@@ -2078,7 +2078,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //        {
         scrollInspetor.remove(inspetorDeSimbolos);
         scrollInspetor.setViewportView(painelPlugins);
-        divisorArvoreInspetor.setDividerLocation(650);
+        divisorArvoreInspetor.setDividerLocation(0.7);
         painelInspetorArvore.validate();
 //        }
     }
@@ -2086,7 +2086,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     public void ocultarPainelPlugins() {
         scrollInspetor.remove(painelPlugins);
         scrollInspetor.setViewportView(inspetorDeSimbolos);
-        divisorArvoreInspetor.setDividerLocation(758);
+        divisorArvoreInspetor.setDividerLocation(-1);
     }
 
     @Override
