@@ -27,6 +27,7 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
         if (WeblafUtils.weblafEstaInstalado()) {
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
             WeblafUtils.configurarBotao(botaoFechar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
+            rotuloNome.setForeground(ColorController.COR_LETRA);
         }
     }
 
