@@ -28,7 +28,7 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
     private MeuModel modelListaPlugin = new MeuModel();
     private List<Plugin> plugins = new ArrayList<>();
     private AbaCodigoFonte abaCodigoFonte;
-    private PainelPlugins painelPlugins = new PainelPlugins();
+    private PainelPlugins painelPlugins;
 
     public PainelConfigPlugins() {
         initComponents();
@@ -240,7 +240,7 @@ public final class PainelConfigPlugins extends javax.swing.JPanel implements The
     private void listaPluginsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaPluginsMouseClicked
         final int index = ((JList) evt.getSource()).getSelectedIndex();
         final Plugin plugin = plugins.get(index);
-
+        painelPlugins = new PainelPlugins();
         /*JFrame frame = new JFrame();
         frame.setSize(640, 480);
         frame.setLayout(new GridLayout(1, 1));

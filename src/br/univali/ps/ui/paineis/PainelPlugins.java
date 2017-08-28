@@ -31,6 +31,7 @@ public final class PainelPlugins extends javax.swing.JPanel implements Themeable
         initComponents();
         criarDicasInterface();
         configurarCores();
+        
         botaoFechar.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "window_close.png"));
         botaoInformacoes.setIcon(IconFactory.createIcon(IconFactory.CAMINHO_ICONES_PEQUENOS, "information.png"));
     }
@@ -39,6 +40,7 @@ public final class PainelPlugins extends javax.swing.JPanel implements Themeable
     public void configurarCores() {
         painelBarraFerramentas.setBackground(ColorController.FUNDO_ESCURO);
         if (WeblafUtils.weblafEstaInstalado()) {
+            WeblafUtils.configuraWeblaf(painelConteudo,ColorController.COR_DESTAQUE);
             WeblafUtils.configuraWeblaf(barraFerramentas);//tira a borda dos botões principais
             WeblafUtils.configurarBotao(botaoInformacoes, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
             WeblafUtils.configurarBotao(botaoFechar, ColorController.COR_PRINCIPAL, ColorController.COR_LETRA, ColorController.COR_DESTAQUE, ColorController.COR_LETRA, 5);
@@ -56,8 +58,6 @@ public final class PainelPlugins extends javax.swing.JPanel implements Themeable
 
             this.plugin = plugin;
             this.metaDadosPlugin = plugin.getMetaDados();
-
-            //instalarNovoPlugin();
         }
     }
 
@@ -74,22 +74,6 @@ public final class PainelPlugins extends javax.swing.JPanel implements Themeable
             painelConteudo.remove(this.plugin.getVisao());
             this.plugin = null;
         }
-    }
-
-    private void instalarNovoPlugin() {
-        rotuloNome.setIcon(new ImageIcon(metaDadosPlugin.getIcone16x16()));
-        rotuloNome.setText(metaDadosPlugin.getNome());
-
-        painelConteudo.add(plugin.getVisao(), BorderLayout.CENTER);
-
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                validate();
-                repaint();
-            }
-        });
     }
 
     @SuppressWarnings("unchecked")
@@ -112,6 +96,7 @@ public final class PainelPlugins extends javax.swing.JPanel implements Themeable
         setPreferredSize(new java.awt.Dimension(200, 200));
         setLayout(new java.awt.BorderLayout());
 
+        painelBarraFerramentas.setBackground(new java.awt.Color(255, 0, 51));
         painelBarraFerramentas.setOpaque(false);
         painelBarraFerramentas.setPreferredSize(new java.awt.Dimension(304, 34));
         painelBarraFerramentas.setLayout(new java.awt.BorderLayout());
