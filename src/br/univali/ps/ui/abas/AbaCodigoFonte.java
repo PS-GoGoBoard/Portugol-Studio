@@ -14,6 +14,7 @@ import br.univali.portugol.nucleo.Portugol;
 import br.univali.portugol.nucleo.Programa;
 import br.univali.portugol.nucleo.analise.ResultadoAnalise;
 import br.univali.portugol.nucleo.analise.sintatica.erros.ErroExpressoesForaEscopoPrograma;
+import br.univali.portugol.nucleo.asa.ASAPrograma;
 import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.TipoDado;
@@ -2100,7 +2101,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                 //barraFerramentas.remove(botaoPlugin);
                 //botoesPlugins.remove(plugin);
-
 //                if (painelPlugins.getPlugin() == plugin) {
 //                    painelPlugins.removerPlugin();
 //                }
@@ -2108,7 +2108,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //                    ocultarPainelBotoesPlugins();
                     ocultarPainelPlugins();
                 }*/
-                
                 painelConfigPlugins.removeModeloLista(plugin);
                 painelInspetorArvore.validate();
             }
@@ -2118,6 +2117,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     @Override
     public String obterCodigoFonteUsuario() {
         return editor.getPortugolDocumento().getCodigoFonte();
+    }
+
+    @Override
+    public ASAPrograma obterArvoreSintaticaAbstrata() {
+        return programaCompilado.getArvoreSintaticaAbstrata();
     }
 
     @Override
@@ -2342,9 +2346,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) aba;
                     if (abaCodigoFonte.podeFechar()) {
                         abaCodigoFonte.redefinirAba();
-                        
-                        
-                        
 
                         /* Ao fechar a aba precisamos desinstalar todos os plugins instalados nela. Fazemos isto,
                          * para garantir que quando a aba for reaproveitada a partir do pool, ela não irá conter dados
@@ -2395,8 +2396,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         });
     }
-    
-    public JScrollPane getScrollInspetor(){
+
+    public JScrollPane getScrollInspetor() {
         return scrollInspetor;
     }
 
