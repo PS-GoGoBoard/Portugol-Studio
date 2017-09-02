@@ -2120,8 +2120,21 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
     }
 
     @Override
-    public ASAPrograma obterArvoreSintaticaAbstrata() {
+    public ASAPrograma obterASAProgramaCompilado() {
+        if (programaCompilado != null){
         return programaCompilado.getArvoreSintaticaAbstrata();
+        }
+        
+        return null;
+    }
+    
+    @Override
+    public ASAPrograma obterASAProgramaAnalisado() {
+        if (programaAnalisado != null){
+        return programaAnalisado.getArvoreSintaticaAbstrata();
+        }
+        
+        return null;
     }
 
     @Override
