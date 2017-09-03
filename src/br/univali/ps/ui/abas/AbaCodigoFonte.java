@@ -18,6 +18,8 @@ import br.univali.portugol.nucleo.asa.ExcecaoVisitaASA;
 import br.univali.portugol.nucleo.asa.NoDeclaracao;
 import br.univali.portugol.nucleo.asa.TipoDado;
 import br.univali.portugol.nucleo.asa.TrechoCodigoFonte;
+import br.univali.portugol.nucleo.bibliotecas.base.Biblioteca;
+import br.univali.portugol.nucleo.bibliotecas.base.ErroCarregamentoBiblioteca;
 import br.univali.portugol.nucleo.execucao.ModoEncerramento;
 import br.univali.portugol.nucleo.execucao.ObservadorExecucaoBasico;
 import br.univali.portugol.nucleo.execucao.ResultadoExecucao;
@@ -592,6 +594,17 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         painelEditor.add(barraBotoesEditor, constraints);
         painelEditor.setComponentZOrder(barraBotoesEditor, 0);
+    }
+
+    @Override
+    public void registrarBiblioteca(Class<? extends Biblioteca> biblioteca) {
+        try {
+            if (!Portugol.getGerenciadorBibliotecas().listarBibliotecasDisponiveis().contains(biblioteca.getSimpleName())) {
+                Portugol.getGerenciadorBibliotecas().registrarBibliotecaExterna(biblioteca);
+            }
+        } catch (ErroCarregamentoBiblioteca ex) {
+            Logger.getLogger(AbaCodigoFonte.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static class NoTransferable implements Transferable {
@@ -2100,7 +2113,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
                 //barraFerramentas.remove(botaoPlugin);
                 //botoesPlugins.remove(plugin);
-
 //                if (painelPlugins.getPlugin() == plugin) {
 //                    painelPlugins.removerPlugin();
 //                }
@@ -2108,7 +2120,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 //                    ocultarPainelBotoesPlugins();
                     ocultarPainelPlugins();
                 }*/
-                
                 painelConfigPlugins.removeModeloLista(plugin);
                 painelInspetorArvore.validate();
             }
@@ -2125,6 +2136,7 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+
                 WebButton botaoAcao = new WebButton(acao);
 
                 botaoAcao.setBorderPainted(false);
@@ -2141,7 +2153,11 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                 }
                 barraFerramentas.add(botaoAcao);
                 barraFerramentas.repaint();
-                mapaBotoesAcoesPlugins.put(acao, botaoAcao);
+
+                if (!mapaBotoesAcoesPlugins.containsKey(acao)) {
+                    mapaBotoesAcoesPlugins.put(acao, botaoAcao);
+                }
+
             }
         });
     }
@@ -2244,6 +2260,13 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
         tarefaCompilacao.cancel(true);
         tarefaCompilacao = null;
         programaAnalisado = programaCompilado = null;
+
+        //Remove os botões de ação da barra de ferramentas para evitar que duplicam
+        for (Map.Entry<Action, WebButton> object : mapaBotoesAcoesPlugins.entrySet()) {
+            barraFerramentas.remove(object.getValue());
+        }
+
+        mapaBotoesAcoesPlugins.clear();
     }
 
     private boolean podeFechar() {
@@ -2342,9 +2365,6 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
                     AbaCodigoFonte abaCodigoFonte = (AbaCodigoFonte) aba;
                     if (abaCodigoFonte.podeFechar()) {
                         abaCodigoFonte.redefinirAba();
-                        
-                        
-                        
 
                         /* Ao fechar a aba precisamos desinstalar todos os plugins instalados nela. Fazemos isto,
                          * para garantir que quando a aba for reaproveitada a partir do pool, ela não irá conter dados
@@ -2395,8 +2415,8 @@ public final class AbaCodigoFonte extends Aba implements PortugolDocumentoListen
 
         });
     }
-    
-    public JScrollPane getScrollInspetor(){
+
+    public JScrollPane getScrollInspetor() {
         return scrollInspetor;
     }
 
